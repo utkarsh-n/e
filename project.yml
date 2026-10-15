@@ -1,0 +1,66 @@
+name: Euler
+options:
+  bundleIdPrefix: com.utkarsh
+  deploymentTarget:
+    iOS: '26.0'
+  createIntermediateGroups: true
+settings:
+  base:
+    SWIFT_VERSION: '6.0'
+    MARKETING_VERSION: '1.0'
+    CURRENT_PROJECT_VERSION: '1'
+    DEVELOPMENT_TEAM: ""
+    CODE_SIGN_STYLE: Automatic
+targets:
+  EulerCore:
+    type: framework
+    platform: iOS
+    sources:
+      - path: Sources/EulerCore
+        excludes: ['**/*.md']
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        PRODUCT_BUNDLE_IDENTIFIER: com.utkarsh.euler.core
+  Euler:
+    type: application
+    platform: iOS
+    sources: [App]
+    dependencies:
+      - target: EulerCore
+    info:
+      path: App/Info.plist
+      properties:
+        CFBundleDisplayName: e
+        UILaunchScreen: {}
+        UIUserInterfaceStyle: Dark
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        ITSAppUsesNonExemptEncryption: false
+        LSApplicationCategoryType: public.app-category.education
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.utkarsh.euler
+        TARGETED_DEVICE_FAMILY: '1,2'
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+  EulerUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources: [UITests]
+    dependencies:
+      - target: Euler
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        PRODUCT_BUNDLE_IDENTIFIER: com.utkarsh.euler.uitests
+        TEST_TARGET_NAME: Euler
+schemes:
+  Euler:
+    build:
+      targets:
+        Euler: all
+        EulerUITests: [test]
+    test:
+      targets: [EulerUITests]
